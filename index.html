@@ -1,48 +1,296 @@
+
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
   <title>Menata Hari Tua</title>
-  <meta name="theme-color" content="#0C6561"/>
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f766e"/>
+  <style>
+    :root{
+      --teal:#0f766e;
+      --teal-2:#115e59;
+      --orange:#f59e0b;
+      --bg:#f7f7f7;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --ring:#e5e7eb;
+      --success:#16a34a;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;background:var(--bg);color:#0f172a}
+    header{position:sticky;top:0;background:var(--card);border-bottom:1px solid var(--ring);z-index:10}
+    .wrap{max-width:980px;margin:0 auto;padding:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{width:36px;height:36px}
+    .brand h1{font-size:20px;margin:0;color:var(--teal)}
+    nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    nav button{background:#eef2ff;border:1px solid var(--ring);border-radius:10px;padding:8px 12px;cursor:pointer}
+    nav button.active{background:var(--teal);color:white;border-color:var(--teal)}
+    main{padding:20px 0}
+    .card{background:var(--card);border:1px solid var(--ring);border-radius:16px;padding:16px}
+    .grid{display:grid;gap:12px}
+    @media(min-width:720px){ .grid.cols-2{grid-template-columns:1fr 1fr} .grid.cols-3{grid-template-columns:repeat(3,1fr)} }
+    .kpi{display:flex;align-items:center;gap:12px;padding:12px;border:1px dashed var(--ring);border-radius:12px}
+    .kpi .val{font-weight:700}
+    .pillars{display:grid;gap:10px}
+    .pillars .item{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;border:1px solid var(--ring)}
+    .check{display:flex;align-items:center;gap:8px;margin:8px 0}
+    .check input{transform:scale(1.2)}
+    .footer{color:var(--muted);font-size:12px;text-align:center;margin-top:16px}
+    .btn{display:inline-block;background:var(--orange);color:white;padding:10px 14px;border:none;border-radius:12px;cursor:pointer}
+    .btn.secondary{background:var(--teal)}
+    .muted{color:var(--muted)}
+    .title{margin:0 0 8px 0}
+    .subtitle{margin:0 0 16px 0;color:var(--muted)}
+    .list{margin:0;padding-left:18px}
+    .progress{height:10px;background:#e5e7eb;border-radius:10px;overflow:hidden}
+    .progress > div{height:100%;background:var(--success);width:0%}
+    .year-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+    .year-nav button{padding:8px 10px;border-radius:10px;border:1px solid var(--ring);background:white}
+    .year-nav button.active{background:var(--teal);color:white;border-color:var(--teal)}
+  </style>
 </head>
 <body>
-  <header class="app-header">
-    <div class="logo"><img src="icons/icon-192.png" alt="logo"/></div>
-    <div>
-      <h1>Menata Hari Tua</h1>
-      <p class="tagline">Strategi Keuangan, Kesehatan, Sosial, & Spiritual Menuju Pensiun</p>
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <img src="assets/icon-192.png" alt="Icon">
+      <div>
+        <h1>Menata Hari Tua</h1>
+        <div class="muted" style="font-size:12px">Peta jalan 7 tahun menuju pensiun</div>
+      </div>
     </div>
-  </header>
+    <nav>
+      <button data-page="home" class="active">Beranda</button>
+      <button data-page="roadmap">Roadmap 7 Tahun</button>
+      <button data-page="checklist">Checklist</button>
+      <button data-page="kalkulator">Kalkulator</button>
+      <button data-page="tentang">Tentang</button>
+    </nav>
+  </div>
+</header>
 
-  <nav class="quick-grid">
-    <button class="card" onclick="showPage('roadmap')">Roadmap 7 Tahun</button>
-    <button class="card" onclick="showPage('checklist')">Checklist Tahunan</button>
-    <button class="card" onclick="showPage('kalkulator')">Kalkulator Pensiun</button>
-    <button class="card" onclick="showPage('progres')">Catatan & Progres</button>
-  </nav>
+<main>
+  <div class="wrap">
+    <!-- Pages -->
+    <section id="page-home">
+      <h2 class="title">Selamat datang</h2>
+      <p class="subtitle">Mulai dari langkah kecil hari ini. Progres Anda tersimpan di perangkat (offline).</p>
+      <div class="grid cols-3">
+        <div class="kpi card"><div>Keuangan</div><div class="progress"><div id="p-keu"></div></div><div class="val" id="p-keu-val">0%</div></div>
+        <div class="kpi card"><div>Kesehatan</div><div class="progress"><div id="p-kes"></div></div><div class="val" id="p-kes-val">0%</div></div>
+        <div class="kpi card"><div>Sosial</div><div class="progress"><div id="p-sos"></div></div><div class="val" id="p-sos-val">0%</div></div>
+      </div>
+      <div style="margin-top:12px" class="kpi card">
+        <div>Spiritual</div>
+        <div class="progress" style="flex:1"><div id="p-spi"></div></div>
+        <div class="val" id="p-spi-val">0%</div>
+      </div>
+      <div style="margin-top:16px">
+        <button class="btn" onclick="goto('roadmap')">Mulai Roadmap</button>
+        <button class="btn secondary" onclick="goto('checklist')">Lihat Checklist</button>
+      </div>
+    </section>
 
-  <main id="content"></main>
+    <section id="page-roadmap" style="display:none">
+      <h2 class="title">Roadmap 7 Tahun</h2>
+      <p class="subtitle">Pilih tahun untuk melihat fokus keuangan, kesehatan, sosial, dan spiritual.</p>
+      <div class="year-nav" id="year-nav"></div>
+      <div id="year-content" class="card"></div>
+    </section>
 
-  <footer class="footer">
-    <button onclick="showPage('home')">Beranda</button>
-    <button onclick="showPage('roadmap')">Roadmap</button>
-    <button onclick="showPage('checklist')">Checklist</button>
-    <button onclick="showPage('kalkulator')">Kalkulator</button>
-    <button onclick="showPage('progres')">Progres</button>
-  </footer>
+    <section id="page-checklist" style="display:none">
+      <h2 class="title">Checklist Tahunan</h2>
+      <p class="subtitle">Centang tugas yang selesai. Progres tersimpan otomatis.</p>
+      <div id="checklist-container" class="grid"></div>
+    </section>
 
-  <script src="app.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js');
+    <section id="page-kalkulator" style="display:none">
+      <h2 class="title">Kalkulator Anggaran Pensiun</h2>
+      <p class="subtitle">Perkirakan kebutuhan bulanan saat pensiun dan bandingkan dengan penghasilan pasif.</p>
+      <div class="card">
+        <div class="grid cols-2">
+          <label>Pengeluaran bulanan (Rp)<br><input id="k-pengeluaran" type="number" min="0" placeholder="10000000" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--ring)"></label>
+          <label>Penghasilan pasif bulanan (Rp)<br><input id="k-pasif" type="number" min="0" placeholder="11000000" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--ring)"></label>
+        </div>
+        <div class="grid cols-2" style="margin-top:8px">
+          <label>Inflasi tahunan (%)<br><input id="k-inflasi" type="number" min="0" step="0.1" value="4" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--ring)"></label>
+          <label>Horizon (tahun)<br><input id="k-horizon" type="number" min="1" value="25" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--ring)"></label>
+        </div>
+        <div style="margin-top:12px">
+          <button class="btn" onclick="hitungKalkulator()">Hitung</button>
+        </div>
+        <div id="k-hasil" style="margin-top:12px" class="muted"></div>
+      </div>
+    </section>
+
+    <section id="page-tentang" style="display:none">
+      <h2 class="title">Tentang Aplikasi</h2>
+      <div class="card">
+        <p><strong>Menata Hari Tua</strong> adalah aplikasi PWA ringan untuk memandu persiapan pensiun 7 tahun sebelum purnatugas, mencakup pilar keuangan, kesehatan, sosial, dan spiritual.</p>
+        <ul class="list">
+          <li>Bisa di-instal di Android melalui Chrome (Tambahkan ke Layar Utama)</li>
+          <li>Berfungsi offline (service worker + cache)</li>
+          <li>Data progres disimpan lokal (localStorage)</li>
+        </ul>
+        <p class="muted">Versi 1.0</p>
+      </div>
+    </section>
+
+    <div class="footer">© 2025 Menata Hari Tua — PWA</div>
+  </div>
+</main>
+
+<script>
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js');
+}
+
+// SPA router
+const navButtons = document.querySelectorAll('nav button');
+function goto(page){
+  document.querySelectorAll('main section').forEach(s=>s.style.display='none');
+  document.getElementById('page-'+page).style.display='block';
+  navButtons.forEach(b=>b.classList.toggle('active', b.dataset.page===page));
+  if(page==='roadmap') renderRoadmapYear(currentYearKey);
+  if(page==='checklist') renderChecklist();
+}
+navButtons.forEach(btn=>btn.addEventListener('click',()=>goto(btn.dataset.page)));
+
+// Data Roadmap
+const years = [
+  {key:'y7', label:'Tahun ke-7', fokus:'Evaluasi & Pemetaan Awal', keu:'Audit aset, utang, tabungan; hitung kebutuhan pensiun.', kes:'Medical check-up lengkap; catat parameter dasar.', sos:'Petakan komunitas/jejaring aktif.', spi:'Evaluasi ibadah; susun rutinitas dasar.'},
+  {key:'y6', label:'Tahun ke-6', fokus:'Perbaikan Fondasi', keu:'Kurangi utang konsumtif 50%; tambah tabungan pensiun.', kes:'Pola makan sehat; olahraga 3x/minggu.', sos:'Konsisten hadir komunitas (80%).', spi:'Ikut kajian mingguan.'},
+  {key:'y5', label:'Tahun ke-5', fokus:'Penguatan Kapasitas', keu:'Diversifikasi investasi (>=3 instrumen).', kes:'Ikut olahraga komunitas.', sos:'Ambil peran pengurus/kontributor.', spi:'Sedekah bulanan konsisten.'},
+  {key:'y4', label:'Tahun ke-4', fokus:'Penghasilan Pasif', keu:'Uji coba usaha kecil/sumber pasif.', kes:'Pemeriksaan rutin; jaga BB ideal.', sos:'Bangun 3 relasi strategis baru.', spi:'Biasakan ibadah sunnah harian.'},
+  {key:'y3', label:'Tahun ke-3', fokus:'Simulasi Pensiun', keu:'Hidup sesuai anggaran pensiun.', kes:'Tidur 7–8 jam; aktivitas harian.', sos:'Mentoring/mengajar bulanan.', spi:'Program ibadah intensif tahunan.'},
+  {key:'y2', label:'Tahun ke-2', fokus:'Finalisasi Rencana', keu:'Bebas utang; dana darurat 12 bulan.', kes:'Cek kesehatan 2x setahun.', sos:'Bentuk kelompok pensiunan.', spi:'Umrah/ziarah persiapan batin.'},
+  {key:'y1', label:'Tahun ke-1', fokus:'Transisi Emosional', keu:'Finalisasi pencairan hak pensiun.', kes:'Tetapkan dokter/klinik langganan.', sos:'Jadwal silaturahmi rutin.', spi:'Mantapkan ibadah wajib & sunnah.'},
+  {key:'y0', label:'Tahun Pertama Pensiun', fokus:'Adaptasi & Penyesuaian', keu:'Evaluasi pengeluaran triwulan.', kes:'Olahraga & cek rutin.', sos:'Tetap aktif 2 kegiatan/bulan.', spi:'Perbanyak amal & rutinitas.'}
+];
+
+// Year nav
+const yearNav = document.getElementById('year-nav');
+years.forEach(y=>{
+  const b = document.createElement('button');
+  b.textContent = y.label;
+  b.addEventListener('click', ()=>{currentYearKey = y.key; renderRoadmapYear(currentYearKey)});
+  yearNav.appendChild(b);
+});
+let currentYearKey = 'y7';
+
+function renderRoadmapYear(key){
+  const y = years.find(v=>v.key===key) || years[0];
+  Array.from(yearNav.children).forEach(btn => btn.classList.toggle('active', btn.textContent===y.label));
+  const html = `
+    <h3 style="margin-top:0">${y.label}</h3>
+    <p class="muted">Fokus: <strong>${y.fokus}</strong></p>
+    <div class="pillars">
+      <div class="item"><strong>Keuangan:</strong> ${y.keu}</div>
+      <div class="item"><strong>Kesehatan:</strong> ${y.kes}</div>
+      <div class="item"><strong>Sosial:</strong> ${y.sos}</div>
+      <div class="item"><strong>Spiritual:</strong> ${y.spi}</div>
+    </div>`;
+  document.getElementById('year-content').innerHTML = html;
+}
+
+// Checklist data (by pillar & year)
+const checklistTemplate = {
+  keu:['Audit keuangan awal','Kurangi utang konsumtif','Diversifikasi investasi','Uji sumber penghasilan pasif','Simulasi anggaran pensiun','Dana darurat 12 bulan','Finalisasi dana pensiun','Evaluasi triwulan'],
+  kes:['MCU lengkap','Olahraga 3x/minggu','Olahraga komunitas','Pemeriksaan rutin','Tidur 7–8 jam','Cek 2x setahun','Rencana perawatan','Olahraga rutin pensiun'],
+  sos:['Petakan komunitas','Kehadiran 80%','Peran pengurus','Relasi strategis','Mentoring bulanan','Kelompok pensiunan','Silaturahmi rutin','Aktif 2 kegiatan/bulan'],
+  spi:['Evaluasi rutinitas','Kajian mingguan','Sedekah bulanan','Ibadah sunnah harian','Program intensif','Umrah/ziarah','Mantapkan wajib&sunnah','Amal berkelanjutan']
+};
+
+function getStore(){
+  return JSON.parse(localStorage.getItem('menata-store')||'{}');
+}
+function setStore(obj){
+  localStorage.setItem('menata-store', JSON.stringify(obj));
+  updateProgressBars();
+}
+function keyFor(yIdx, pillar, taskIdx){
+  return `${yIdx}-${pillar}-${taskIdx}`;
+}
+
+function renderChecklist(){
+  const container = document.getElementById('checklist-container');
+  container.innerHTML = '';
+  years.forEach((y, yIdx)=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<h3 style="margin-top:0">${y.label}</h3>`;
+    for(const pillar of ['keu','kes','sos','spi']){
+      card.innerHTML += `<h4 style="margin:8px 0">${pillar.toUpperCase()}</h4>`;
+      const tasks = checklistTemplate[pillar];
+      tasks.slice(yIdx,yIdx+1).forEach((t, tRelIdx)=>{
+        const k = keyFor(yIdx, pillar, tRelIdx);
+        const checked = !!getStore()[k];
+        const row = document.createElement('label');
+        row.className = 'check';
+        row.innerHTML = `<input type="checkbox" ${checked?'checked':''} data-k="${k}"> ${t}`;
+        card.appendChild(row);
       });
     }
-  </script>
+    container.appendChild(card);
+  });
+  container.querySelectorAll('input[type=checkbox]').forEach(c=>{
+    c.addEventListener('change', (e)=>{
+      const store = getStore();
+      store[e.target.dataset.k] = e.target.checked;
+      setStore(store);
+    });
+  });
+  updateProgressBars();
+}
+
+function updateProgressBars(){
+  // Simple progress per pillar = checked count / total tasks for that pillar across all years
+  const store = getStore();
+  const totalPerPillar = {keu:0, kes:0, sos:0, spi:0};
+  const donePerPillar = {keu:0, kes:0, sos:0, spi:0};
+  years.forEach((y, yIdx)=>{
+    for(const p of ['keu','kes','sos','spi']){
+      totalPerPillar[p]+=1;
+      const k = keyFor(yIdx, p, 0);
+      if(store[k]) donePerPillar[p]+=1;
+    }
+  });
+  const ids = {keu:['p-keu','p-keu-val'], kes:['p-kes','p-kes-val'], sos:['p-sos','p-sos-val'], spi:['p-spi','p-spi-val']};
+  for(const p in ids){
+    const pct = totalPerPillar[p] ? Math.round(donePerPillar[p]/totalPerPillar[p]*100) : 0;
+    document.getElementById(ids[p][0]).style.width = pct+'%';
+    document.getElementById(ids[p][1]).textContent = pct+'%';
+  }
+}
+
+// Kalkulator
+function rupiah(n){ return (n||0).toLocaleString('id-ID'); }
+function hitungKalkulator(){
+  const pengeluaran = parseFloat(document.getElementById('k-pengeluaran').value || '0');
+  const pasif = parseFloat(document.getElementById('k-pasif').value || '0');
+  const inflasi = parseFloat(document.getElementById('k-inflasi').value || '0')/100;
+  const horizon = parseInt(document.getElementById('k-horizon').value || '25',10);
+  // Proyeksi pengeluaran masa depan (FV) = pengeluaran * (1+inflasi)^horizon
+  const fv = Math.round(pengeluaran * Math.pow(1+inflasi, horizon));
+  const gap = pasif - pengeluaran;
+  const status = gap>=0 ? 'Surplus' : 'Defisit';
+  const note = `Proyeksi pengeluaran ${horizon} th ke depan (inflasi ${Math.round(inflasi*100)}%): Rp ${rupiah(fv)}`;
+  document.getElementById('k-hasil').innerHTML = `
+    <p><strong>Status saat ini:</strong> ${status} (selisih: Rp ${rupiah(gap)}/bln)</p>
+    <p>${note}</p>
+  `;
+}
+
+// Initialize
+renderRoadmapYear(currentYearKey);
+updateProgressBars();
+
+// Route default
+goto('home');
+</script>
 </body>
 </html>
