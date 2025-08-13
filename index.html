@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menata Hari Tua</title>
+  <meta name="theme-color" content="#0C6561"/>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="logo"><img src="icons/icon-192.png" alt="logo"/></div>
+    <div>
+      <h1>Menata Hari Tua</h1>
+      <p class="tagline">Strategi Keuangan, Kesehatan, Sosial, & Spiritual Menuju Pensiun</p>
+    </div>
+  </header>
+
+  <nav class="quick-grid">
+    <button class="card" onclick="showPage('roadmap')">Roadmap 7 Tahun</button>
+    <button class="card" onclick="showPage('checklist')">Checklist Tahunan</button>
+    <button class="card" onclick="showPage('kalkulator')">Kalkulator Pensiun</button>
+    <button class="card" onclick="showPage('progres')">Catatan & Progres</button>
+  </nav>
+
+  <main id="content"></main>
+
+  <footer class="footer">
+    <button onclick="showPage('home')">Beranda</button>
+    <button onclick="showPage('roadmap')">Roadmap</button>
+    <button onclick="showPage('checklist')">Checklist</button>
+    <button onclick="showPage('kalkulator')">Kalkulator</button>
+    <button onclick="showPage('progres')">Progres</button>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+      });
+    }
+  </script>
+</body>
+</html>
